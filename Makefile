@@ -3,3 +3,4 @@ test:
 	@for t in tests/t*; do \
 	  $$t; \
 	done
+	@echo "All tests passed"
