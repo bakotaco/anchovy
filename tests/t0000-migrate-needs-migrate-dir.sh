@@ -11,7 +11,7 @@ function fail {
 # our command
 command="$PWD/migrate"
 
-# create an empty directory somewhere
+# create an empty directory somewhere and navigate to it
 dir=$(mktemp -d -t migrate-test)
 cd $dir
 
