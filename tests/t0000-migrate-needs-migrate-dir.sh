@@ -14,7 +14,7 @@ stdout=$($migrate_cmd 2>&1 1>/dev/null)
 exit_status=$?
 
 test $exit_status = 1 || fail "Expected an unsuccesful exit status"
-expected_message="ERROR: Directory './migrations' not found.
+expected_message="ERROR: Directory 'migrations' not found.
 Did you initialize migrations for this project?"
 test "$stdout" = "$expected_message" || fail "Did not receive the expected error message"
 

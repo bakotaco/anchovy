@@ -1,4 +1,4 @@
 #!/bin/bash
 
-echo -e "ERROR: Directory './migrations' not found.\nDid you initialize migrations for this project?" 1>&2
+echo -e "ERROR: Directory 'migrations' not found.\nDid you initialize migrations for this project?" 1>&2
 exit 1
