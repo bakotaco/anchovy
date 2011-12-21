@@ -16,6 +16,6 @@ exit_status=$?
 test $exit_status = 1 || fail "Expected an unsuccesful exit status"
 expected_message="ERROR: Directory 'migrations' not found.
 Did you initialize migrations for this project?"
-test "$stdout" = "$expected_message" || fail "Did not receive the expected error message"
+assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 
 rmdir $dir
