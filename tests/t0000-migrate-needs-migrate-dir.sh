@@ -5,7 +5,8 @@
 
 . test-lib.sh
 
-# create an empty directory somewhere and navigate to it
+# create an empty directory somewhere which is treated as our 'project'
+# directory for the scope of this test. there is no migrations subdirectory.
 dir=$(mktemp -d -t migrate-test)
 cd $dir
 

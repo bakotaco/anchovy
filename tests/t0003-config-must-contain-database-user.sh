@@ -5,9 +5,11 @@
 
 . test-lib.sh
 
-# create an empty directory somewhere and navigate to it with a migrations dir
+# create an empty directory somewhere which is treated as our 'project'
+# directory for the scope of this test
 dir=$(mktemp -d -t migrate-test)
 cd $dir
+# create a migrations directory
 mkdir migrations
 # add a config file with only the database host specified
 echo "db_host='somehost'" > migrations/config

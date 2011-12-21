@@ -4,10 +4,11 @@
 
 . test-lib.sh
 
-# create an empty directory somewhere and navigate to it with an empty
-# migrations subdir
+# create an empty directory somewhere which is treated as our 'project'
+# directory for the scope of this test
 dir=$(mktemp -d -t migrate-test)
 cd $dir
+# create an empty migrations directory
 mkdir migrations
 
 # run the migrate script and expect it to fail
