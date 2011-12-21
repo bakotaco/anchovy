@@ -22,9 +22,15 @@ fi
 # the migrate script crashing...
 . migrations/config
 
+# check for required configuration settings
 if [ -z "$db_host" ]; then
     error "ERROR: Missing required configuration setting 'db_host' in 'migrations/config'."
     error "Please specify the hostname migrate should connect to in the config file"
+    exit 1
+fi
+if [ -z "$db_user" ]; then
+    error "ERROR: Missing required configuration setting 'db_user' in 'migrations/config'."
+    error "Please specify the user migrate should use to connect to the database in the config file"
     exit 1
 fi
 
