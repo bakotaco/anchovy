@@ -1,4 +1,15 @@
-#!/bin/bash
+#!/bin/sh
 
-echo -e "ERROR: Directory 'migrations' not found.\nDid you initialize migrations for this project?" 1>&2
-exit 1
+# check for migrations subdirectory in current directory
+if [ ! -d "migrations" ]; then
+    echo "ERROR: Directory 'migrations' not found.\nDid you initialize migrations for this project?" 1>&2
+    exit 1
+fi
+
+# check for configuration file named 'config' in migrations directory
+if [ ! -f "migrations/config" ]; then
+    echo "ERROR: Configuration 'migrations/config' not found." 1>&2
+    echo "Please add the configuration file named 'config' to the migrations directory" 1>&2
+    exit 1
+fi
+
