@@ -15,7 +15,7 @@ test:
 	      echo "[PASSED]"; \
 	    else \
 	      echo "[FAILURE]"; \
-	      echo $$test_out; \
+	      echo "$$test_out"; \
 	    fi; \
 	  fi \
 	done
