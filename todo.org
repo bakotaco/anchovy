@@ -1,0 +1,5 @@
+- [ ] config should require database name
+- [ ] config should require database user
+- [ ] config should require database password (really?)
+- [ ] have migrate try to connect to mysql and fail
+- [ ] finish README
