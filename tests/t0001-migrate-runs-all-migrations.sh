@@ -14,8 +14,11 @@ mkdir migrations
 stdout=$($migrate_cmd 2>&1 1>/dev/null)
 exit_status=$?
 
-test $exit_status = 1 || fail "Expected an unsuccesful exit status"
+# assertions
+assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
 expected_message="ERROR: Configuration 'migrations/config' not found.
 Please add the configuration file named 'config' to the migrations directory"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
+
+# teardown
 rm -rf $dir

@@ -13,9 +13,11 @@ cd $dir
 stdout=$($migrate_cmd 2>&1 1>/dev/null)
 exit_status=$?
 
-test $exit_status = 1 || fail "Expected an unsuccesful exit status"
+# assertions
+assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
 expected_message="ERROR: Directory 'migrations' not found.
 Did you initialize migrations for this project?"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 
+# teardown
 rmdir $dir
