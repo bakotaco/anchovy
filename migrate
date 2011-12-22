@@ -44,6 +44,24 @@ if [ -z "$db_name" ]; then
     exit 1
 fi
 
+for f in migrations/*; do
+    if echo $f | grep "^migrations/.*\.sql$" >/dev/null; then
+        mysql_out=$(mysql --host="$db_host" --user="$db_user" --password="$db_password" --database="$db_name" < $f 2>&1)
+        if [ $? != 0 ]; then
+            # attempt to convert the errors given by MySQL to errors which
+            # provide the user context
+            if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' (0)$" >/dev/null; then
+                error "ERROR: Cannot connect to host '$db_host'."
+                error "Is the host specified in the configuration file up and reachable?"
+            else
+                error "ERROR: the database returned the following error:"
+                error $out
+            fi
+            exit 1
+        fi
+    fi
+done
+
 echo "Migrate ran successfully."
 echo "However there were no migrations executed as none were found in the migrations directory"
 exit 0

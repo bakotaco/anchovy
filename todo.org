@@ -1,5 +1,4 @@
-- [ ] config should require database name
-- [ ] have migrate try to connect to mysql and fail
+- [ ] test: only .sql files are treated as migration files
 - [ ] finish README
 - [ ] think about: should we really require the database password to be in the
       migrations configuration file?
