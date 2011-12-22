@@ -11,13 +11,12 @@ test:
 	passed=0; \
 	for f in *; do \
 	  if echo $$f | grep '^t[[:digit:]]\{4\}' >/dev/null; then \
-	    echo "- $$f\t\c"; \
 	    test_out=$$(. $(basename $$f) 2>&1); \
 	    if [ $$? = 0 ]; then \
-	      echo "[PASSED]"; \
+	      printf "%-50s %s\n" $$f "[OK]"; \
 	      passed=$$(($$passed+1)); \
 	    else \
-	      echo "[FAILURE]"; \
+	      printf "%-50s %s\n" $$f "[FAILURE]"; \
 	      echo "$$test_out"; \
 	      failed=$$(($$failed+1)); \
 	    fi; \
