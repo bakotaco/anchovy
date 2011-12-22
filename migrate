@@ -38,6 +38,11 @@ if [ -z "$db_password" ]; then
     error "Please specify the password migrate should use to connect to the database in the config file"
     exit 1
 fi
+if [ -z "$db_name" ]; then
+    error "ERROR: Missing required configuration setting 'db_name' in 'migrations/config'."
+    error "Please specify the database name migrate should connect to in the config file"
+    exit 1
+fi
 
 
 echo "SUCCESS"
