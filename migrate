@@ -44,5 +44,6 @@ if [ -z "$db_name" ]; then
     exit 1
 fi
 
-
-echo "SUCCESS"
+echo "Migrate ran successfully."
+echo "However there were no migrations executed as none were found in the migrations directory"
+exit 0
