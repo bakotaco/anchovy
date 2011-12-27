@@ -56,6 +56,9 @@ for f in migrations/*; do
             elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: NO)" >/dev/null; then
                 error "ERROR: Access denied for database user '$db_user'."
                 error "Is the username '$db_user' specified in the configuration correct?"
+            elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: YES)" >/dev/null; then
+                error "ERROR: Access denied for user '$db_user'."
+                error "Is the password specified in the configuration file correct?"
             else
                 error "ERROR: the database returned the following error:"
                 error $mysql_out
