@@ -12,9 +12,14 @@ test:
 	for f in *; do \
 	  if echo $$f | grep '^t[[:digit:]]\{4\}' >/dev/null; then \
 	    test_out=$$(. $(basename $$f) 2>&1); \
-	    if [ $$? = 0 ]; then \
+	    exit_status=$$?; \
+	    if [ $$exit_status = 0 ]; then \
 	      printf "%-50s %s\n" $$f "[OK]"; \
 	      passed=$$(($$passed+1)); \
+	    elif [ $$exit_status = 255 ]; then \
+	      echo "ERROR: Prerequisites to run tests not met"; \
+	      echo "$$test_out"; \
+	      exit 1; \
 	    else \
 	      printf "%-50s %s\n" $$f "[FAILURE]"; \
 	      echo "$$test_out"; \
