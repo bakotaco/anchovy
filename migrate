@@ -53,9 +53,12 @@ for f in migrations/*; do
             if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' (0)$" >/dev/null; then
                 error "ERROR: Cannot connect to host '$db_host'."
                 error "Is the host specified in the configuration file up and reachable?"
+            elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: NO)" >/dev/null; then
+                error "ERROR: Access denied for database user '$db_user'."
+                error "Is the username '$db_user' specified in the configuration correct?"
             else
                 error "ERROR: the database returned the following error:"
-                error $out
+                error $mysql_out
             fi
             exit 1
         fi
