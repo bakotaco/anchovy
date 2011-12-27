@@ -2,3 +2,5 @@
 - [ ] finish README
 - [ ] think about: should we really require the database password to be in the
       migrations configuration file?
+- [ ] test when user host privilege is incorrect
+- [ ] test when host for schema privilege is incorrect
