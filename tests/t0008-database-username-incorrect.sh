@@ -5,15 +5,6 @@
 
 . test-lib.sh
 
-# check precondition: db on localhost should be up
-db_host="localhost"
-mysql_out=$(mysql --host=$db_host --user=somenonexistentuser 2>&1)
-if [ "$mysql_out" = "ERROR 2002 (HY000): Can't connect to local MySQL server through socket '/tmp/mysql.sock' (2)" ]; then
-    error "FAILURE: Can't connect to MySQL database instance on host '$db_host'"
-    error "Please start a MySQL server on '$db_host' and rerun the test suite"
-    exit 1
-fi
-
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
 dir=$(mktemp -d -t migrate-test)
