@@ -20,6 +20,19 @@ function assert_equals {
     fi
 }
 
+function assert_matches {
+    if echo "$2" | grep "$1"; then
+        # TODO: can't we simply negate the previous check? can that be done
+        # easy and elegantly?
+        true
+    else
+        error "FAILURE: '$3'"
+        error "pattern: '$1'"
+        error "source: '$2'"
+        exit 1;
+    fi
+}
+
 # check preconditions for all tests
 
 # verify that a database for testing purposes is up and running with the
@@ -28,7 +41,8 @@ db_host="localhost"
 db_username="migrate_test"
 db_password="m1gr4t3"
 db_name="migrate_test"
-mysql_out=$(mysql --host="$db_host" --user="$db_username" --password="$db_password" --database="$db_name" </dev/null 2>&1)
+MYSQL_COMMAND="mysql --host=$db_host --user=$db_username --password=$db_password --database=$db_name"
+mysql_out=$($MYSQL_COMMAND </dev/null 2>&1)
 if [ $? != 0 ]; then
     echo $mysql_out
     error "FAILURE: Unable to connect to database for testing purposes"
@@ -38,3 +52,5 @@ if [ $? != 0 ]; then
     error "- a database named '$db_name'"
     exit 255
 fi
+
+echo 'drop table migrations' | $MYSQL_COMMAND
