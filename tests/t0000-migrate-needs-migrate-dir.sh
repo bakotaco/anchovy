@@ -11,7 +11,7 @@ dir=$(mktemp -d -t migrate-test)
 cd $dir
 
 # run the migrate script and expect it to fail
-stdout=$($migrate_cmd 2>&1 1>/dev/null)
+stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # assertions

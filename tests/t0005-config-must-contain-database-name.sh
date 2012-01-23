@@ -18,7 +18,7 @@ db_user='someuser'
 db_password='somepassword'" > migrations/config
 
 # run the migrate script
-stdout=$($migrate_cmd 2>&1 1>/dev/null)
+stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail with the specified message
