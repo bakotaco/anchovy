@@ -106,13 +106,23 @@ else
     echo "[OK]"
 fi
 
+# NOTE: tail +2 skips the first header line
+executed_migrations=$(run_mysql_query "SELECT id FROM migrations" | tail +2)
+
 # actually execute the migrations
 echo "* executing migrations"
 for f in migrations/*; do
     if echo "$f" | grep "^migrations/.*\.sql$" >/dev/null; then
         # execute migration
-        echo "- executing $f"
-        run_mysql_file "$f" >/dev/null
+        # NOTE: here we also strip any potential leading zeroes, except when it's the last
+        migration_id=$(echo "$f" | sed -n 's,^migrations/0*\([0-9][0-9]*\).*$,\1,p')
+        if echo "$executed_migrations" | grep "$migration_id" >/dev/null; then
+            echo "- already executed $f"
+        else
+            echo "- executing $f"
+            run_mysql_file "$f" >/dev/null
+            run_mysql_query "INSERT INTO migrations SET id = '$migration_id'" >/dev/null
+        fi
     fi
 done
 
