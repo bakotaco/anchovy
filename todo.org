@@ -8,3 +8,5 @@
 - [ ] warn when creating migration tables in a non-empty database
 - [ ] think about: should we really manage one database at a time? or should we migrate 'sets of databases'? yagni for now
 - [ ] make sure that 'show tables like migrations' does not throw 'unknown table 'migrations' - handle this differently perhaps?
+- [ ] determine how to handle when migrations caused errors
+- [ ] what to do when there are files in the migrations directory which are not numbered
