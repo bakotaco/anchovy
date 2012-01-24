@@ -3,7 +3,7 @@ migrate_cmd="$PWD/../migrate"
 
 # helpers
 function error {
-    echo $* 1>&2
+    echo "$*" 1>&2
 }
 
 function fail {
@@ -14,8 +14,8 @@ function fail {
 function assert_equals {
     if [ "$1" != "$2" ]; then
         error "FAILURE: '$3'"
-        error "expected: '$1'"
-        error "actual: '$2'"
+        error ">>> expected:\n'$1'"
+        error ">>> actual:\n'$2'"
         exit 1;
     fi
 }
