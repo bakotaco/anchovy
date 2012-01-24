@@ -111,16 +111,16 @@ executed_migrations=$(run_mysql_query "SELECT id FROM migrations" | tail +2)
 
 # actually execute the migrations
 echo "* executing migrations"
-for f in migrations/*; do
-    if echo "$f" | grep "^migrations/.*\.sql$" >/dev/null; then
+for f in $(ls migrations | sort -n); do
+    if echo "$f" | grep "^[0-9][0-9]*.*\.sql$" >/dev/null; then
         # execute migration
         # NOTE: here we also strip any potential leading zeroes, except when it's the last
-        migration_id=$(echo "$f" | sed -n 's,^migrations/0*\([0-9][0-9]*\).*$,\1,p')
+        migration_id=$(echo "$f" | sed -n 's,^0*\([0-9][0-9]*\).*$,\1,p')
         if echo "$executed_migrations" | grep "$migration_id" >/dev/null; then
-            echo "- already executed $f"
+            echo "- already executed migrations/$f"
         else
-            echo "- executing $f"
-            run_mysql_file "$f" >/dev/null
+            echo "- executing migrations/$f"
+            run_mysql_file "migrations/$f" >/dev/null
             run_mysql_query "INSERT INTO migrations SET id = '$migration_id'" >/dev/null
         fi
     fi

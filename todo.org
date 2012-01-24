@@ -10,3 +10,4 @@
 - [ ] make sure that 'show tables like migrations' does not throw 'unknown table 'migrations' - handle this differently perhaps?
 - [ ] determine how to handle when migrations caused errors
 - [ ] what to do when there are files in the migrations directory which are not numbered
+- [X] migrations should be executed in order
