@@ -80,18 +80,18 @@ run_mysql_file () {
     fi
     mysql_out=$($MYSQL_COMMAND < $file 2>&1)
     catch_mysql_error
-    return $mysql_out
+    echo "$mysql_out"
 }
 
 run_mysql_query () {
     sql=$1
     mysql_out=$(echo "$sql" | mysql --host="$db_host" --user="$db_user" --password="$db_password" --database="$db_name" 2>&1)
     catch_mysql_error
-    return $mysql_out
+    echo "$mysql_out"
 }
 
 # verify database connection
-run_mysql_file /dev/null
+run_mysql_file /dev/null >/dev/null
 
 # check for migrations table
 echo "* checking for migration tables \c"
@@ -100,7 +100,7 @@ if [ "z$out" = "z" ]; then
     # migrations table does not exist, create it
     echo "[MISSING]"
     echo "- creating migration tables \c"
-    run_mysql_query "CREATE TABLE migrations (id INT UNIQUE)"
+    run_mysql_query "CREATE TABLE migrations (id INT UNIQUE)" >/dev/null
     echo "[OK]"
 else
     echo "[OK]"
@@ -112,8 +112,8 @@ for f in migrations/*; do
     if echo "$f" | grep "^migrations/.*\.sql$" >/dev/null; then
         # execute migration
         echo "- executing $f \c"
-        run_mysql_file "$f"
         echo "[OK]"
+        run_mysql_file "$f" >/dev/null
     fi
 done
 
