@@ -85,7 +85,7 @@ run_mysql_file () {
 
 run_mysql_query () {
     sql=$1
-    mysql_out=$(echo "$sql" | mysql --host="$db_host" --user="$db_user" --password="$db_password" --database="$db_name" 2>&1)
+    mysql_out=$(echo "$sql" | $MYSQL_COMMAND 2>&1)
     catch_mysql_error
     echo "$mysql_out"
 }
