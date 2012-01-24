@@ -111,8 +111,7 @@ echo "* executing migrations"
 for f in migrations/*; do
     if echo "$f" | grep "^migrations/.*\.sql$" >/dev/null; then
         # execute migration
-        echo "- executing $f \c"
-        echo "[OK]"
+        echo "- executing $f"
         run_mysql_file "$f" >/dev/null
     fi
 done
