@@ -18,9 +18,9 @@ touch migrations/0001-does-nothing.sql
 # the following database should not exist or the specified user should not
 # have access to it
 non_existent_db_name="nonexistingdb"
-echo "db_host='localhost'
-db_user='migrate_test'
-db_password='m1gr4t3'
+echo "db_host='$db_host'
+db_user='$db_username'
+db_password='$db_password'
 db_name='$non_existent_db_name'" > migrations/config
 
 # run the migrate script

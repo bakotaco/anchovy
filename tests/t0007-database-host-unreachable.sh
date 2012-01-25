@@ -14,9 +14,9 @@ mkdir migrations
 touch migrations/0001-does-nothing.sql
 # all required configuration settings are specified
 echo "db_host='nonexistentdatabasehost'
-db_user='someuser'
-db_password='somepassword'
-db_name='somedb'" > migrations/config
+db_user='$db_username'
+db_password='$db_password'
+db_name='$db_name'" > migrations/config
 
 # run the migrate script
 stdout=$($migrate_cmd 2>&1)

@@ -4,22 +4,14 @@
 
 . test-lib.sh
 
-# create an empty directory somewhere which is treated as our 'project'
-# directory for the scope of this test
-dir=$(mktemp -d -t migrate-test)
-cd $dir
-# create a migrations directory with a bunch of dummy migrations with numbers
-mkdir migrations
+create_valid_project
+
+# create a bunch of dummy migrations with numbers
 touch migrations/0011-does-nothing.sql
 touch migrations/0001-does-nothing.sql
 touch migrations/012-does-nothing.sql
 touch migrations/02-does-nothing.sql
 touch migrations/111-does-nothing.sql
-# all required configuration settings are specified.
-echo "db_host='localhost'
-db_user='migrate_test'
-db_password='m1gr4t3'
-db_name='migrate_test'" > migrations/config
 
 # run the migrate script once
 stdout=$($migrate_cmd 2>&1)

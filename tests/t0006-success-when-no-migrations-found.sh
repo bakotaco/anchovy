@@ -12,10 +12,10 @@ cd $dir
 # create a migrations directory
 mkdir migrations
 # all required configuration settings are specified
-echo "db_host='localhost'
-db_user='migrate_test'
-db_password='m1gr4t3'
-db_name='migrate_test'" > migrations/config
+echo "db_host='$db_host'
+db_user='$db_username'
+db_password='$db_password'
+db_name='$db_name'" > migrations/config
 
 # run the migrate script
 stdout=$($migrate_cmd 2>&1)

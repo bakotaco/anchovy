@@ -12,10 +12,12 @@ cd $dir
 # create a migrations directory with a single dummy migration
 mkdir migrations
 touch migrations/0001-does-nothing.sql
-# all required configuration settings are specified
-existing_db_user='migrate_test'
-echo "db_host='localhost'
-db_user='$existing_db_user'
+# all required configuration settings are specified, but only host and
+# username are correct. Note that migrate only reports that the password is
+# incorrect, as authorization for the specified non existing database can only
+# be checked after authentication.
+echo "db_host='$db_host'
+db_user='$db_username'
 db_password='wrongpassword'
 db_name='nonexistingdb'" > migrations/config
 
@@ -24,7 +26,7 @@ stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # expect it to succeed
-expected_message="ERROR: Access denied for user '$existing_db_user'.
+expected_message="ERROR: Access denied for user '$db_username'.
 Is the password specified in the configuration file correct?"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
