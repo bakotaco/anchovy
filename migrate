@@ -106,6 +106,16 @@ else
     echo "[OK]"
 fi
 
+MIGRATION_PATTERN="^[0-9][0-9]*.*\.sql$"
+
+# check for invalid files in migrations dir
+invalid_files=$(ls migrations | grep -v $MIGRATION_PATTERN | grep -v config)
+if [ -n "$invalid_files" ]; then
+    error "ERROR: found files in migrations/ directory which do not start with a number and/or have a '.sql' file extension"
+    echo "$invalid_files" | sed 's,^,- migrations/,'
+    exit 1
+fi
+
 # NOTE: tail +2 skips the first header line
 executed_migrations=$(run_mysql_query "SELECT id FROM migrations ORDER BY id" | tail +2)
 
@@ -113,7 +123,7 @@ executed_migrations=$(run_mysql_query "SELECT id FROM migrations ORDER BY id" | 
 echo "* executing migrations"
 executed_max_id=$(($(echo $executed_migrations | tail -1)))
 for f in $(ls migrations | sort -n); do
-    if echo "$f" | grep "^[0-9][0-9]*.*\.sql$" >/dev/null; then
+    if echo "$f" | grep $MIGRATION_PATTERN >/dev/null; then
         # execute migration
         # NOTE: here we also strip any potential leading zeroes, except when
         # it's the last number
