@@ -55,7 +55,10 @@ if [ $? != 0 ]; then
     exit 255
 fi
 
-echo 'DROP TABLE IF EXISTS migrations' | $MYSQL_COMMAND
+# remove all tables
+for table in $(echo 'SHOW TABLES' | $MYSQL_COMMAND | tail +2); do
+    echo "DROP TABLE IF EXISTS $table" | $MYSQL_COMMAND
+done
 
 # helper method for creating a stub project with a valid config
 function create_valid_project {
