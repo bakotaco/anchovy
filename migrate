@@ -99,6 +99,14 @@ out=$(run_mysql_query "SHOW TABLES like 'migrations'")
 if [ "z$out" = "z" ]; then
     # migrations table does not exist, create it
     echo "[MISSING]"
+
+    # make sure the database is empty
+    tables=
+    if [ -n "$(run_mysql_query 'SHOW TABLES')" ]; then
+        error "ERROR: database is not empty, will only initialize in an empty database."
+        exit 1
+    fi
+
     echo "- creating migration tables \c"
     run_mysql_query "CREATE TABLE migrations (id INT UNIQUE)" >/dev/null
     echo "[OK]"
