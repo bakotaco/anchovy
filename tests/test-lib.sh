@@ -3,7 +3,7 @@ migrate_cmd="$PWD/../migrate"
 
 # helpers
 function error {
-    echo -e "$*" 1>&2
+    echo "$*" 1>&2
 }
 
 function fail {

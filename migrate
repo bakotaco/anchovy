@@ -108,7 +108,7 @@ if [ "z$out" = "z" ]; then
     fi
 
     echo "- creating migration tables \c"
-    run_mysql_query "CREATE TABLE migrations (id INT UNIQUE)" >/dev/null
+    run_mysql_query "CREATE TABLE migrations (id INT UNSIGNED NOT NULL UNIQUE, md5 CHAR(32) NOT NULL)" >/dev/null
     echo "[OK]"
 else
     echo "[OK]"
@@ -132,6 +132,8 @@ function filter_migration_ids () {
 
 migrations=$(ls migrations | grep -v config | sort -n)
 migration_ids=$(echo "$migrations" | filter_migration_ids)
+
+# error and exit when there are duplicate migrations
 duplicate_migration_ids=$(echo "$migration_ids" | uniq -c | awk '$1 > 1 { print $2 }')
 if [ -n "$duplicate_migration_ids" ]; then
     error "ERROR: found migrations with duplicate numbers:"
@@ -144,19 +146,28 @@ if [ -n "$duplicate_migration_ids" ]; then
     exit 1
 fi
 
-# NOTE: tail +2 skips the mysql header (first line of output)
-executed_migrations=$(run_mysql_query "SELECT id FROM migrations ORDER BY id" | tail +2)
+# note that 'tail +2' skips the mysql header (first line of output)
+executed_migrations=$(run_mysql_query "SELECT id, md5 FROM migrations ORDER BY id" | tail +2)
+executed_migration_ids=$(echo "$executed_migrations" | awk '{ print $1 }')
 # here $((..)) will make the number numeric, stripping any leading zeroes
-executed_max_id=$(($(echo "$executed_migrations" | tail -1)))
+executed_max_id=$(($(echo "$executed_migration_ids" | tail -1)))
 
 # actually execute the migrations
 echo "* executing migrations"
 for migration in $migrations; do
     # execute migration
     migration_id=$(echo "$migration" | filter_migration_ids)
+    md5=$(md5 < "migrations/$migration")
 
-    if echo "$executed_migrations" | grep "^$migration_id$" >/dev/null; then
-        echo "- already executed migrations/$migration"
+    if echo "$executed_migration_ids" | grep "^$migration_id$" >/dev/null; then
+        # verify that the executed migration has not changed
+        if echo "$executed_migrations" | grep "$md5" >/dev/null; then
+            echo "- already executed migrations/$migration"
+        else
+            error "ERROR: found already executed migration which has been altered since executing it:"
+            error "- migrations/$migration"
+            exit 1
+        fi
     else
         # error when previously executed migration id is higher than the current one
         if [ ! $migration_id -gt $executed_max_id ]; then
@@ -166,7 +177,7 @@ for migration in $migrations; do
 
         echo "- executing migrations/$migration"
         run_mysql_file "migrations/$migration" >/dev/null
-        run_mysql_query "INSERT INTO migrations SET id = '$migration_id'" >/dev/null
+        run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
     fi
 done
 

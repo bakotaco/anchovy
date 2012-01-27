@@ -1,18 +1,33 @@
 - [X] warn when creating migration tables in a non-empty database
 - [X] error when there are migrations with duplicate numbers
-- [ ] determine changes to patch files by running md5sum of migrations
+- [X] determine changes to patch files by running md5sum of migrations
 - [ ] determine how to handle when migrations caused errors
 - [ ] use 'set -e'
+- [ ] do we also want to support rollbacks? (e.g. down migrations)
+- [ ] think about how the user would resolve our detected errors and perhaps
+      provide commands to help him
+- [ ] provide a way to pack stacks of migrations into one, to make migrate run faster
+- [ ] support sqlite, postgres
 - [ ] finish README
-- [ ] think about: what to do when there is already a migrations table, but it's not created by migrate?
+- [ ] think about: what to do when there is already a migrations table, but
+      it's not created by migrate?
 - [ ] think about: should we really require the database password to be in the
       migrations configuration file?
 - [ ] test when user host privilege is incorrect
 - [ ] test when host for schema privilege is incorrect
-- [ ] have test suite run standalone: don't require a locally running mysql server, instead start mysqld for testing purposes locally (on a different port)
-- [ ] think about: should we really manage one database at a time? or should we migrate 'sets of databases'? yagni for now
-- [ ] make sure that 'show tables like migrations' does not throw 'unknown table 'migrations' - handle this differently perhaps?
-- [ ] when test database is not setup present simple commands to create those (create user, db, privileges, etc)
+- [ ] have test suite run standalone: don't require a locally running mysql
+      server, instead start mysqld for testing purposes locally (on a
+      different port)
+- [ ] think about: should we really manage one database at a time? or should
+      we migrate 'sets of databases'? yagni for now
+- [ ] make sure that 'show tables like migrations' does not throw 'unknown
+      table 'migrations' - handle this differently perhaps?
+- [ ] when test database is not setup present simple commands to create those
+      (create user, db, privileges, etc)
+- [ ] determine if something safer than md5, such as sha1, is needed for this
+      application. make a trade off for this and portability
+- [ ] migration IDs should be positive integers
 - [X] test: only .sql files are treated as migration files
-- [X] what to do when there are files in the migrations directory which are not numbered
+- [X] what to do when there are files in the migrations directory which are
+      not numbered
 - [X] migrations should be executed in order
