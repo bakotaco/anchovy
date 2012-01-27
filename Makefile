@@ -1,12 +1,13 @@
-install: test
-	@if [ "$(DESTDIR)" = "" ]; then \
-	  echo "ERROR: DESTDIR variable not set, unknown where to install to" 1>&2; \
-	  exit 1; \
-	fi
+install: check_destdir test
 	@install -d "$(DESTDIR)/bin"
 	@install migrate "$(DESTDIR)/bin"
 	@echo "OK: installed migrate into $(DESTDIR)"
 
+check_destdir:
+	@if [ "$(DESTDIR)" = "" ]; then \
+	  echo "ERROR: DESTDIR variable not set, unknown where to install to" 1>&2; \
+	  exit 1; \
+	fi
 
 test:
 	@[ -d "tests" ] || (echo "ERROR: tests directory does not exist" && exit 1)
