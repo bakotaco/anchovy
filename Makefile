@@ -1,7 +1,11 @@
 install: test
-	@[ "$(DESTDIR)" = "" ] && (echo "ERROR: DESTDIR variable not set, unknown where to install to" 1>&2 && exit 1)
-	@install -d "$(DESTDIR)"
-	@install migrate "$(DESTDIR)"
+	@if [ "$(DESTDIR)" = "" ]; then \
+	  echo "ERROR: DESTDIR variable not set, unknown where to install to" 1>&2; \
+	  exit 1; \
+	fi
+	@install -d "$(DESTDIR)/bin"
+	@install migrate "$(DESTDIR)/bin"
+	@echo "OK: installed migrate into $(DESTDIR)"
 
 
 test:
