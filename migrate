@@ -124,33 +124,49 @@ if [ -n "$invalid_files" ]; then
     exit 1
 fi
 
-# NOTE: tail +2 skips the first header line
+function filter_migration_ids () {
+    # NOTE: here we also strip any potential leading zeroes, except when
+    # it's the last number
+    sed -n 's,^0*\([0-9][0-9]*\).*.sql$,\1,p'
+}
+
+migrations=$(ls migrations | grep -v config | sort -n)
+migration_ids=$(echo "$migrations" | filter_migration_ids)
+duplicate_migration_ids=$(echo "$migration_ids" | uniq -c | awk '$1 > 1 { print $2 }')
+if [ -n "$duplicate_migration_ids" ]; then
+    error "ERROR: found migrations with duplicate numbers:"
+    for migration in $migrations; do
+        migration_id=$(echo "$migration" | filter_migration_ids)
+        if echo "$duplicate_migration_ids" | grep "^$migration_id$" >/dev/null; then
+            error "- migrations/$migration"
+        fi
+    done
+    exit 1
+fi
+
+# NOTE: tail +2 skips the mysql header (first line of output)
 executed_migrations=$(run_mysql_query "SELECT id FROM migrations ORDER BY id" | tail +2)
+# here $((..)) will make the number numeric, stripping any leading zeroes
+executed_max_id=$(($(echo "$executed_migrations" | tail -1)))
 
 # actually execute the migrations
 echo "* executing migrations"
-executed_max_id=$(($(echo $executed_migrations | tail -1)))
-for f in $(ls migrations | sort -n); do
-    if echo "$f" | grep $MIGRATION_PATTERN >/dev/null; then
-        # execute migration
-        # NOTE: here we also strip any potential leading zeroes, except when
-        # it's the last number
-        migration_id=$(echo "$f" | sed -n 's,^0*\([0-9][0-9]*\).*$,\1,p')
+for migration in $migrations; do
+    # execute migration
+    migration_id=$(echo "$migration" | filter_migration_ids)
 
-        if echo "$executed_migrations" | grep "^$migration_id$" >/dev/null; then
-            echo "- already executed migrations/$f"
-        else
-
-            # error when previously executed migration id is higher than the current one
-            if [ ! $migration_id -gt $executed_max_id ]; then
-                error "ERROR: migrations/$f has not been executed, but a higher migration with id $executed_max_id has already been executed"
-                exit 1
-            fi
-
-            echo "- executing migrations/$f"
-            run_mysql_file "migrations/$f" >/dev/null
-            run_mysql_query "INSERT INTO migrations SET id = '$migration_id'" >/dev/null
+    if echo "$executed_migrations" | grep "^$migration_id$" >/dev/null; then
+        echo "- already executed migrations/$migration"
+    else
+        # error when previously executed migration id is higher than the current one
+        if [ ! $migration_id -gt $executed_max_id ]; then
+            error "ERROR: migrations/$migration has not been executed, but a higher migration with id $executed_max_id has already been executed"
+            exit 1
         fi
+
+        echo "- executing migrations/$migration"
+        run_mysql_file "migrations/$migration" >/dev/null
+        run_mysql_query "INSERT INTO migrations SET id = '$migration_id'" >/dev/null
     fi
 done
 
