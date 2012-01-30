@@ -14,9 +14,27 @@ function fail {
 function assert_equals {
     if [ "$1" != "$2" ]; then
         error "FAILURE: '$3'"
-        error ">>> expected:\n'$1'"
-        error ">>> actual:\n'$2'"
-        exit 1;
+        # when diff is available
+        if which diff >/dev/null; then
+            # show difference using a unified diff
+            error "Diff of expected and actual follows:"
+            expected_file=$(mktemp -t expected)
+            actual_file=$(mktemp -t actual)
+            echo "$1" > $expected_file
+            echo "$2" > $actual_file
+            diff -U10000 $expected_file $actual_file
+            exit 1
+        else
+            # else let the user look for the difference himself
+            error ">>> expected:"
+            error "$1"
+            error "<<<"
+            error ">>> actual:"
+            error "$2"
+            error "<<<"
+            exit 1;
+        fi
+        exit
     fi
 }
 
