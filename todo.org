@@ -4,11 +4,13 @@
 - [ ] determine how to handle when migrations caused errors
 - [ ] use 'set -e'
 - [ ] do we also want to support rollbacks? (e.g. down migrations)
+- [ ] make sure this also work on non os x machines
 - [ ] think about how the user would resolve our detected errors and perhaps
       provide commands to help him
 - [ ] provide a way to pack stacks of migrations into one, to make migrate run faster
 - [ ] support sqlite, postgres
 - [ ] finish README
+- [ ] cleanup temp files used for testing purposes with final signal trap
 - [ ] think about: what to do when there is already a migrations table, but
       it's not created by migrate?
 - [ ] think about: should we really require the database password to be in the
