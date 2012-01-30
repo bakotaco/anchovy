@@ -44,7 +44,20 @@ if [ -z "$db_name" ]; then
     exit 1
 fi
 
-catch_mysql_error() {
+MYSQL_COMMAND="mysql --host=$db_host --user=$db_user --password=$db_password --database=$db_name"
+
+execute_migration () {
+    file=$1
+    $MYSQL_COMMAND < "$file" 2>&1
+    # catch MySQL error
+    return $?
+}
+
+run_mysql_query () {
+    sql=$1
+    # NOTE: quoting $sql in the line below breaks things, however is it currently properly quoted?
+    mysql_out=$(echo "$sql" | $MYSQL_COMMAND 2>&1)
+    # catch MySQL error
     if [ $? != 0 ]; then
         # attempt to convert the errors given by MySQL to errors which
         # provide the user context
@@ -68,30 +81,11 @@ catch_mysql_error() {
         fi
         exit 1
     fi
-}
-
-MYSQL_COMMAND="mysql --host=$db_host --user=$db_user --password=$db_password --database=$db_name"
-
-run_mysql_file () {
-    file=$1
-    if [ ! -r "$file" ]; then
-        error "Cannot execute '$file', because it is not found"
-        exit 1
-    fi
-    mysql_out=$($MYSQL_COMMAND < $file 2>&1)
-    catch_mysql_error
-    echo "$mysql_out"
-}
-
-run_mysql_query () {
-    sql=$1
-    mysql_out=$(echo "$sql" | $MYSQL_COMMAND 2>&1)
-    catch_mysql_error
     echo "$mysql_out"
 }
 
 # verify database connection
-run_mysql_file /dev/null >/dev/null
+run_mysql_query "" >/dev/null
 
 # check for migrations table
 echo "* checking for migration tables \c"
@@ -175,8 +169,15 @@ for migration in $migrations; do
             exit 1
         fi
 
-        echo "- executing migrations/$migration"
-        run_mysql_file "migrations/$migration" >/dev/null
+        mysql_out=$(execute_migration "migrations/$migration")
+        if [ $? = 0 ]; then
+	    printf "\055 executing migrations/%-30s %s\n" $migration "[OK]"
+        else
+	    printf "\055 executing migrations/%-30s %s\n" $migration "[ERROR]"
+            error "ERROR: Executing migration migrations/$migration failed, the database returned:"
+            error $mysql_out
+            exit 1
+        fi
         run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
     fi
 done
