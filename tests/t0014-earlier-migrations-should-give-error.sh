@@ -20,7 +20,7 @@ stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail with the following error message
-expected_message="* checking for migration tables [OK]
+expected_message="* checking for migration tables                      [OK]
 * executing migrations
 ERROR: migrations/0001-does-nothing.sql has not been executed, but a higher migration with id 11 has already been executed"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"

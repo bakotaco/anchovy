@@ -88,7 +88,7 @@ run_mysql_query () {
 run_mysql_query "" >/dev/null
 
 # check for migrations table
-echo "* checking for migration tables \c"
+echo "* checking for migration tables                      \c"
 out=$(run_mysql_query "SHOW TABLES like 'migrations'")
 if [ "z$out" = "z" ]; then
     # migrations table does not exist, create it
@@ -101,7 +101,7 @@ if [ "z$out" = "z" ]; then
         exit 1
     fi
 
-    echo "- creating migration tables \c"
+    echo "- creating migration tables                          \c"
     run_mysql_query "CREATE TABLE migrations (id INT UNSIGNED NOT NULL UNIQUE, md5 CHAR(32) NOT NULL)" >/dev/null
     echo "[OK]"
 else
@@ -171,9 +171,15 @@ for migration in $migrations; do
 
         mysql_out=$(execute_migration "migrations/$migration")
         if [ $? = 0 ]; then
-	    printf "\055 executing migrations/%-30s %s\n" $migration "[OK]"
+            # note that \055 is the '-' character; as it's the first character
+            # in the string, using the ascii code here prevents printf from
+            # interpreting the string as an option
+	    printf "\055 %-50s %s\n" "executing migrations/$migration" "[OK]"
         else
-	    printf "\055 executing migrations/%-30s %s\n" $migration "[ERROR]"
+            # note that \055 is the '-' character; as it's the first character
+            # in the string, using the ascii code here prevents printf from
+            # interpreting the string as an option
+	    printf "\055 %-50s %s\n" "executing migrations/$migration" "[ERROR]"
             error "ERROR: Executing migration migrations/$migration failed, the database returned:"
             error $mysql_out
             exit 1

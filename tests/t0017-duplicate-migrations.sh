@@ -29,7 +29,7 @@ stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail
-expected_message="* checking for migration tables [OK]
+expected_message="* checking for migration tables                      [OK]
 ERROR: found migrations with duplicate numbers:
 - migrations/2-also-does-nothing.sql
 - migrations/2-is-duplicate.sql

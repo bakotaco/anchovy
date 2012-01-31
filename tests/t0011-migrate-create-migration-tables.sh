@@ -16,10 +16,10 @@ exit_status=$?
 
 # expect it to succeed
 
-expected_message="* checking for migration tables [MISSING]
-- creating migration tables [OK]
+expected_message="* checking for migration tables                      [MISSING]
+- creating migration tables                          [OK]
 * executing migrations
-- executing migrations/0001-does-nothing.sql          [OK]
+- executing migrations/0001-does-nothing.sql         [OK]
 Migrate ran successfully."
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 0 "$exit_status" "Expected a succesful exit status"

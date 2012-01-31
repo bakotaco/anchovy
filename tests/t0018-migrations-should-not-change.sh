@@ -25,7 +25,7 @@ stdout=$($migrate_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail
-expected_message="* checking for migration tables [OK]
+expected_message="* checking for migration tables                      [OK]
 * executing migrations
 ERROR: found already executed migration which has been altered since executing it:
 - migrations/1-and-only.sql"

@@ -18,7 +18,7 @@ exit_status=$?
 
 # expect it to succeed without having executed new migrations
 
-expected_message="* checking for migration tables [OK]
+expected_message="* checking for migration tables                      [OK]
 * executing migrations
 - already executed migrations/0001-does-nothing.sql
 Migrate ran successfully."
