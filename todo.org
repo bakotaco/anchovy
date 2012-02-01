@@ -3,26 +3,25 @@
 - [X] determine changes to patch files by running md5sum of migrations
 - [ ] when test database is not setup present simple commands to create those
       (create user, db, privileges, etc)
+- [ ] create something like 'migrate init' to initialize a new project
+      (migrations dir + config)
 - [ ] test when user host privilege is incorrect
 - [ ] test when host for schema privilege is incorrect
 - [ ] cleanup temp files used for testing purposes with final signal trap
 - [ ] write more documentation in README
 - [ ] make sure this also work on non os x machines
-- [ ] when migrations caused errors there are probably different methods of
-      resolving the error and continuing, we should support those in an easy way
+- [ ] when migrations caused errors, then when migrate is run again it should
+      stop immediately.
+- [ ] when migrations caused errors, there should be a command to mark them as
+      fixed, from where we can continue running migrate
 - [ ] robustness: use 'set -e', and other good shell scripting practices (see
-      wooledge wiki, books, ..)
-- [ ] think about: do we also want to support rollbacks? (e.g. down
-      migrations)
-- [ ] when a lot of migrations are run (for instance when you are building a
-      database from scratch), running all migrations might take a long time.
-      we could provide a way to pack (like git-pack) stacks of migrations into
-      one 'snapshot', to make the migration run faster.
+      http://mywiki.wooledge.org/BashFAQ, books, ..)
 - [ ] support other databases: sqlite, postgres, ..?
 - [ ] think about: what to do when there is already a migrations table, but
       it's not created by migrate?
 - [ ] think about: should we really require the database password to be in the
-      migrations configuration file?
+      migrations configuration file? maybe this can be solved by supplying
+      config parameters via env vars
 - [ ] support for integration with frameworks and other build systems by also
       allowing: migrations dir to be elsewhere and/or named differently, have
       config setting be provided in environment variables and/or parameters
@@ -36,6 +35,12 @@
 - [ ] determine if something safer than md5, such as sha1, is needed for this
       application. make a trade off for this and portability
 - [ ] migration IDs should be positive integers
+- [ ] when a lot of migrations are run (for instance when you are building a
+      database from scratch), running all migrations might take a long time.
+      we could provide a way to pack (like git-pack) stacks of migrations into
+      one 'snapshot', to make the migration run faster.
+- [ ] think about: do we also want to support rollbacks? (e.g. down
+      migrations)
 - [X] test: only .sql files are treated as migration files
 - [X] what to do when there are files in the migrations directory which are
       not numbered

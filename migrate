@@ -90,12 +90,11 @@ run_mysql_query "" >/dev/null
 # check for migrations table
 echo "* checking for migration tables                      \c"
 out=$(run_mysql_query "SHOW TABLES like 'migrations'")
-if [ "z$out" = "z" ]; then
+if [ -z "$out" ]; then
     # migrations table does not exist, create it
     echo "[MISSING]"
 
     # make sure the database is empty
-    tables=
     if [ -n "$(run_mysql_query 'SHOW TABLES')" ]; then
         error "ERROR: database is not empty, will only initialize in an empty database."
         exit 1
@@ -164,7 +163,7 @@ for migration in $migrations; do
         fi
     else
         # error when previously executed migration id is higher than the current one
-        if [ ! $migration_id -gt $executed_max_id ]; then
+        if [ $migration_id -le $executed_max_id ]; then
             error "ERROR: migrations/$migration has not been executed, but a higher migration with id $executed_max_id has already been executed"
             exit 1
         fi
@@ -174,17 +173,17 @@ for migration in $migrations; do
             # note that \055 is the '-' character; as it's the first character
             # in the string, using the ascii code here prevents printf from
             # interpreting the string as an option
-	    printf "\055 %-50s %s\n" "executing migrations/$migration" "[OK]"
+            printf "\055 %-50s %s\n" "executing migrations/$migration" "[OK]"
+            run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
         else
             # note that \055 is the '-' character; as it's the first character
             # in the string, using the ascii code here prevents printf from
             # interpreting the string as an option
-	    printf "\055 %-50s %s\n" "executing migrations/$migration" "[ERROR]"
+            printf "\055 %-50s %s\n" "executing migrations/$migration" "[ERROR]"
             error "ERROR: Executing migration migrations/$migration failed, the database returned:"
             error $mysql_out
             exit 1
         fi
-        run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
     fi
 done
 
