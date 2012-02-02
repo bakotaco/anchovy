@@ -112,7 +112,7 @@ MIGRATION_PATTERN="^[0-9][0-9]*.*\.sql$"
 # check for invalid files in migrations dir
 invalid_files=$(ls migrations | grep -v $MIGRATION_PATTERN | grep -v config)
 if [ -n "$invalid_files" ]; then
-    error "ERROR: found files in migrations/ directory which do not start with a number and/or have a '.sql' file extension"
+    error "ERROR: found files in migrations/ directory which do not start with a positive number and/or have a '.sql' file extension"
     echo "$invalid_files" | sed 's,^,- migrations/,'
     exit 1
 fi

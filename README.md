@@ -1,17 +1,19 @@
 Introduction
 ------------
-This project contains a simple database migration script. All is written in
-bourne shell script to make it ultraportable and work in limited environments.
-There is an extensive test suite defined in the tests directory.
 
-Currently only MySQL databases are supported, but anchovy is easy to extend
-with support for other databases in the future.
+Anchovy is a simple database migration tool. It is completely written in
+bourne shell to make it ultraportable and language agnostic. It comes with an
+extensive test suite, There is an extensive test suite defined in the tests
+directory.
+
+Currently it only works with MySQL databases, but anchovy is easy to extend to
+support other databases in the future. Anchovy has been tested on OS X Lion.
 
 Prerequisites
 -------------
 * Bourne shell (installed in /bin/sh, tested with bash supplied bourne mode)
 * Make (tested with GNU make)
-* MySQL client
+* MySQL client (tested with 5.5.14)
 
 Installation
 ------------
@@ -19,10 +21,13 @@ To run the test suite and install the anchovy script run
 
     DESTDIR=<dir> make
 
-where <dir> is replaced with the directory you want to install the script.
+where <dir> is replaced with the directory you want anchovy to be installed.
 
 Usage
 -----
-In order to use anchovy in your project...
+In order to use anchovy in your project 
 
 TODO...
+
+Contributing
+------------

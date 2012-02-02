@@ -23,7 +23,7 @@ exit_status=$?
 # expect it to fail
 expected_message="* checking for migration tables                      [MISSING]
 - creating migration tables                          [OK]
-ERROR: found files in migrations/ directory which do not start with a number and/or have a '.sql' file extension
+ERROR: found files in migrations/ directory which do not start with a positive number and/or have a '.sql' file extension
 - migrations/42-starts-with-number-but-does-not-end-with-dot-sql.txt
 - migrations/does-not-start-with-number.sql
 - migrations/justaname
