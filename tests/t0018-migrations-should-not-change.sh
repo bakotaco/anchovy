@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When there are migrations with duplicate numbers, migrate should always fail
+# When there are migrations with duplicate numbers, anchovy should always fail
 # so we can manually resolve the conflict.
 
 . test-lib.sh
@@ -12,16 +12,16 @@ cat > migrations/1-and-only.sql <<EOF
 CREATE TABLE foo (bar INT);
 EOF
 
-# run migrate once
-$migrate_cmd >/dev/null
+# run anchovy once
+$anchovy_cmd >/dev/null
 
 # change the content of the already executed migration
 cat > migrations/1-and-only.sql <<EOF
 CREATE TABLE foo (bar INT DEFAULT 42);
 EOF
 
-# run migrate again
-stdout=$($migrate_cmd 2>&1)
+# run anchovy again
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail

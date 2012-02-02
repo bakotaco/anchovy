@@ -1,7 +1,7 @@
 install: check_destdir test
 	@install -d "$(DESTDIR)/bin"
-	@install migrate "$(DESTDIR)/bin"
-	@echo "OK: installed migrate into $(DESTDIR)"
+	@install anchovy "$(DESTDIR)/bin"
+	@echo "OK: installed anchovy into $(DESTDIR)"
 
 check_destdir:
 	@if [ "$(DESTDIR)" = "" ]; then \

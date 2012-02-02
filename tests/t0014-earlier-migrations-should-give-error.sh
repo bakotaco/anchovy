@@ -6,17 +6,17 @@
 
 create_valid_project
 
-# create a migration with id 11 and run migrate once
+# create a migration with id 11 and run anchovy once
 touch migrations/0011-does-nothing.sql
-$migrate_cmd >/dev/null 2>&1
+$anchovy_cmd >/dev/null 2>&1
 
 # add another lower numbered migration
 touch migrations/0001-does-nothing.sql
 # and one with a higher id, which should be skipped because of the previous one failing
 touch migrations/0012-does-nothing.sql
 
-# and run migrate again
-stdout=$($migrate_cmd 2>&1)
+# and run anchovy again
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail with the following error message

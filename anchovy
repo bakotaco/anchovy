@@ -19,28 +19,28 @@ fi
 
 # TODO: hmm, is there a better way to read configs in bash? when there is
 # something wrong in the config file (syntax error perhaps) that can lead to
-# the migrate script crashing...
+# the anchovy script crashing...
 . migrations/config
 
 # check for required configuration settings
 if [ -z "$db_host" ]; then
     error "ERROR: Missing required configuration setting 'db_host' in 'migrations/config'."
-    error "Please specify the hostname migrate should connect to in the config file"
+    error "Please specify the hostname anchovy should connect to in the config file"
     exit 1
 fi
 if [ -z "$db_user" ]; then
     error "ERROR: Missing required configuration setting 'db_user' in 'migrations/config'."
-    error "Please specify the user migrate should use to connect to the database in the config file"
+    error "Please specify the user anchovy should use to connect to the database in the config file"
     exit 1
 fi
 if [ -z "$db_password" ]; then
     error "ERROR: Missing required configuration setting 'db_password' in 'migrations/config'."
-    error "Please specify the password migrate should use to connect to the database in the config file"
+    error "Please specify the password anchovy should use to connect to the database in the config file"
     exit 1
 fi
 if [ -z "$db_name" ]; then
     error "ERROR: Missing required configuration setting 'db_name' in 'migrations/config'."
-    error "Please specify the database name migrate should connect to in the config file"
+    error "Please specify the database name anchovy should connect to in the config file"
     exit 1
 fi
 
@@ -187,5 +187,5 @@ for migration in $migrations; do
     fi
 done
 
-echo "Migrate ran successfully."
+echo "Anchovy ran successfully."
 exit 0

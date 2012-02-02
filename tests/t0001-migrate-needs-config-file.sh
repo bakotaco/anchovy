@@ -1,18 +1,18 @@
 #!/bin/sh
 #
-# Migrate connects to the database using the settings in migrations/config
+# Anchovy connects to the database using the settings in migrations/config
 
 . test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t migrate-test)
+dir=$(mktemp -d -t anchovy-test)
 cd $dir
 # create an empty migrations directory
 mkdir migrations
 
-# run the migrate script and expect it to fail
-stdout=$($migrate_cmd 2>&1)
+# run the anchovy script and expect it to fail
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # assertions

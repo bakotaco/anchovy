@@ -1,13 +1,13 @@
 #!/bin/sh
 #
-# When a non existent database host is specified, migrate will fail on the
+# When a non existent database host is specified, anchovy will fail on the
 # first migration.
 
 . test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t migrate-test)
+dir=$(mktemp -d -t anchovy-test)
 cd $dir
 # create a migrations directory with a single dummy migration
 mkdir migrations
@@ -19,8 +19,8 @@ db_user='$non_existent_db_user'
 db_password='$db_password'
 db_name='$db_name'" > migrations/config
 
-# run the migrate script
-stdout=$($migrate_cmd 2>&1)
+# run the anchovy script
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to succeed

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When migrate is run for the first time it should fail when the database
+# When anchovy is run for the first time it should fail when the database
 # already has tables.
 
 . test-lib.sh
@@ -9,8 +9,8 @@ create_valid_project
 
 echo "CREATE TABLE foo (bar INT)" | $MYSQL_COMMAND
 
-# run the migrate script
-stdout=$($migrate_cmd 2>&1)
+# run the anchovy script
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail

@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When migrate is run for the first time migration tables are created, which
+# When anchovy is run for the first time migration tables are created, which
 # hold which migration have already been executed.
 
 . test-lib.sh
@@ -16,8 +16,8 @@ touch migrations/42-starts-with-number-but-does-not-end-with-dot-sql.txt
 touch migrations/number-is-0001-in-between.sql
 touch migrations/justaname
 
-# run the migrate script
-stdout=$($migrate_cmd 2>&1)
+# run the anchovy script
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail

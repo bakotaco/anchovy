@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When there are migrations with duplicate numbers, migrate should always fail
+# When there are migrations with duplicate numbers, anchovy should always fail
 # so we can manually resolve the conflict.
 
 . test-lib.sh
@@ -12,8 +12,8 @@ touch migrations/1-does-nothing.sql
 touch migrations/2-also-does-nothing.sql
 touch migrations/3-and-another.sql
 
-# run migrate once
-$migrate_cmd >/dev/null
+# run anchovy once
+$anchovy_cmd >/dev/null
 
 # add a duplicate of an already executed migration
 touch migrations/2-is-duplicate.sql
@@ -24,8 +24,8 @@ touch migrations/6-baz.sql
 # and another duplicate
 touch migrations/5-duplicate.sql
 
-# run migrate again
-stdout=$($migrate_cmd 2>&1)
+# run anchovy again
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to fail

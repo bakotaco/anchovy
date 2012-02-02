@@ -1,5 +1,5 @@
 # our command
-migrate_cmd="$PWD/../migrate"
+anchovy_cmd="$PWD/../anchovy"
 
 # helpers
 function error {
@@ -56,9 +56,9 @@ function assert_matches {
 # verify that a database for testing purposes is up and running with the
 # following settings
 db_host="localhost"
-db_username="migrate_test"
+db_username="anchovy_test"
 db_password="m1gr4t3"
-db_name="migrate_test_db"
+db_name="anchovy_test_db"
 MYSQL_COMMAND="mysql --host=$db_host --user=$db_username --password=$db_password --database=$db_name"
 mysql_out=$($MYSQL_COMMAND </dev/null 2>&1)
 if [ $? != 0 ]; then
@@ -83,7 +83,7 @@ function create_valid_project {
 
     # create an empty directory somewhere which is treated as our 'project'
     # directory for the scope of this test
-    dir=$(mktemp -d -t migrate-test)
+    dir=$(mktemp -d -t anchovy-test)
     cd $dir
 
     # create a migrations directory

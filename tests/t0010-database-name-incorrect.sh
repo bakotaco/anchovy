@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When a wrong database name is specified, migrate will fail on the first
+# When a wrong database name is specified, anchovy will fail on the first
 # migration. The error for when a non existing and when an existing, but
 # unprivileged database is attempted to be accessed is the same, because we
 # can't determine the difference.
@@ -9,7 +9,7 @@
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t migrate-test)
+dir=$(mktemp -d -t anchovy-test)
 cd $dir
 # create a migrations directory with a single dummy migration
 mkdir migrations
@@ -23,8 +23,8 @@ db_user='$db_username'
 db_password='$db_password'
 db_name='$non_existent_db_name'" > migrations/config
 
-# run the migrate script
-stdout=$($migrate_cmd 2>&1)
+# run the anchovy script
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # expect it to succeed

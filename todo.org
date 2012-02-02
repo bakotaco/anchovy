@@ -5,15 +5,15 @@
 - [ ] cleanup temp files used for testing purposes with final signal trap
 - [ ] write more documentation in README
 - [ ] make sure this also work on non os x machines
-- [ ] when migrations caused errors, then when migrate is run again it should
+- [ ] when migrations caused errors, then when anchovy is run again it should
       stop immediately.
 - [ ] when migrations caused errors, there should be a command to mark them as
-      fixed, from where we can continue running migrate
+      fixed, from where we can continue running anchovy
 - [ ] robustness: use 'set -e', and other good shell scripting practices (see
       http://mywiki.wooledge.org/BashFAQ, books, ..)
 - [ ] support other databases: sqlite, postgres, ..?
 - [ ] think about: what to do when there is already a migrations table, but
-      it's not created by migrate?
+      it's not created by anchovy?
 - [ ] think about: should we really require the database password to be in the
       migrations configuration file? maybe this can be solved by supplying
       config parameters via env vars
@@ -24,7 +24,7 @@
       server, instead start mysqld for testing purposes locally (on a
       different port)
 - [ ] think about: should we really manage one database at a time? or should
-      we migrate 'sets of databases'? yagni for now
+      we anchovy 'sets of databases'? yagni for now
 - [ ] make sure that 'show tables like migrations' does not throw 'unknown
       table 'migrations' - handle this differently perhaps?
 - [ ] determine if something safer than md5, such as sha1, is needed for this

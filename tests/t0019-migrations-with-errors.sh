@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# When there are migrations with errors, migrate should always fail
+# When there are migrations with errors, anchovy should always fail
 # so we can manually resolve the conflict.
 
 . test-lib.sh
@@ -16,8 +16,8 @@ EOF
 # and another succesful one
 touch migrations/3-also-succeeds.sql
 
-# When we run migrate
-stdout=$($migrate_cmd 2>&1)
+# When we run anchovy
+stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 
 # Then we expect it to fail
