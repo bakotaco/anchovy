@@ -101,7 +101,7 @@ if [ -z "$out" ]; then
     fi
 
     echo "- creating migration tables                          \c"
-    run_mysql_query "CREATE TABLE migrations (id INT UNSIGNED NOT NULL UNIQUE, md5 CHAR(32) NOT NULL)" >/dev/null
+    run_mysql_query "CREATE TABLE migrations (id BIGINT UNSIGNED NOT NULL UNIQUE, md5 CHAR(32) NOT NULL)" >/dev/null
     echo "[OK]"
 else
     echo "[OK]"
@@ -163,7 +163,8 @@ for migration in $migrations; do
         fi
     else
         # error when previously executed migration id is higher than the current one
-        if [ $migration_id -le $executed_max_id ]; then
+        # NOTE: bc is used as migration id's can be large
+        if [ $(echo "$migration_id <= $executed_max_id" | bc) -eq 1 ]; then
             error "ERROR: migrations/$migration has not been executed, but a higher migration with id $executed_max_id has already been executed"
             exit 1
         fi

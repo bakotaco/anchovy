@@ -1,8 +1,8 @@
 Introduction
 ------------
 
-Anchovy is a simple database migration tool. It is completely written in
-bourne shell to make it ultraportable and language agnostic. It comes with an
+Anchovy is a simple but reliable database migration tool. It is written in
+bourne shell to make it portable and language agnostic. It comes with an
 extensive test suite, There is an extensive test suite defined in the tests
 directory.
 
@@ -21,11 +21,11 @@ To run the test suite and install the anchovy script run
 
     DESTDIR=<dir> make
 
-where <dir> is replaced with the directory you want anchovy to be installed.
+where <dir> is replaced with the directory where anchovy should be installed.
 
 Usage
 -----
-In order to use anchovy in your project 
+In order to use anchovy in your project
 
 TODO...
 
