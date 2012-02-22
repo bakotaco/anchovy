@@ -2,7 +2,7 @@
 #
 # When a migration is added with a lower number than previous ones, an error should be given
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 

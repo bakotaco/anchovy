@@ -5,7 +5,7 @@
 # unprivileged database is attempted to be accessed is the same, because we
 # can't determine the difference.
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test

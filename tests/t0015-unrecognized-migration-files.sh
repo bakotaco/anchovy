@@ -3,7 +3,7 @@
 # When anchovy is run for the first time migration tables are created, which
 # hold which migration have already been executed.
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 

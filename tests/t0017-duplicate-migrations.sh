@@ -3,7 +3,7 @@
 # When there are migrations with duplicate numbers, anchovy should always fail
 # so we can manually resolve the conflict.
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 

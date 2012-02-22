@@ -2,16 +2,16 @@
 anchovy_cmd="$PWD/../anchovy"
 
 # helpers
-function error {
+error () {
     echo "$*" 1>&2
 }
 
-function fail {
+fail () {
     error "FAIL: $1"
     exit 1
 }
 
-function assert_equals {
+assert_equals () {
     if [ "$1" != "$2" ]; then
         error "FAILURE: '$3'"
         # when diff is available
@@ -38,7 +38,7 @@ function assert_equals {
     fi
 }
 
-function assert_matches {
+assert_matches () {
     if echo "$2" | grep "$1"; then
         # TODO: can't we simply negate the previous check? can that be done
         # easy and elegantly?
@@ -79,7 +79,7 @@ for table in $(echo 'SHOW TABLES' | $MYSQL_COMMAND | tail +2); do
 done
 
 # helper method for creating a stub project with a valid config
-function create_valid_project {
+create_valid_project () {
 
     # create an empty directory somewhere which is treated as our 'project'
     # directory for the scope of this test

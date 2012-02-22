@@ -2,7 +2,7 @@
 #
 # Migrations should be run in order by how they are numbered
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 

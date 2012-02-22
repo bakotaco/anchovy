@@ -3,7 +3,7 @@
 # When anchovy is run for the first time it should fail when the database
 # already has tables.
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 
