@@ -64,10 +64,17 @@ mysql_out=$($MYSQL_COMMAND </dev/null 2>&1)
 if [ $? != 0 ]; then
     echo $mysql_out
     error "FAILURE: Unable to connect to database for testing purposes"
+    error ""
     error "The test suite expects:"
     error "- a MySQL server running at '$db_host'"
     error "- a database user with username '$db_username' and password '$db_password'"
     error "- a database named '$db_name'"
+    error ""
+    error "Issuing the following commands created this database and user:"
+    error ""
+    error "    CREATE DATABASE $db_name;"
+    error "    GRANT ALL ON $db_name.* TO '$db_username'@'localhost' IDENTIFIED BY '$db_password';"
+    error " "
     # NOTE: this exit code signals the makefile that a prerequisite has not
     # been met
     exit 255

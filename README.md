@@ -17,11 +17,16 @@ Prerequisites
 
 Installation
 ------------
-To run the test suite and install the anchovy script run
+1.  The test suite expects to have a MySQL server running on localhost with a database and user created by issuing the following commands:
 
-    DESTDIR=<dir> make
+        CREATE DATABASE anchovy_test_db;
+        GRANT ALL ON anchovy_test_db.* TO 'anchovy_test'@'localhost'IDENTIFIED BY 'm1gr4t3';
 
-where <dir> is replaced with the directory you want anchovy to be installed.
+2.  To run the test suite and install anchovy run
+
+        DESTDIR=<dir> make
+
+    where ```<dir>``` is replaced with the directory where anchovy should be installed.
 
 Usage
 -----
