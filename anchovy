@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# exit when uninitialised variables encountered
+set -u
+
 error () {
     echo "$*" 1>&2
 }
@@ -23,22 +26,22 @@ fi
 . migrations/config
 
 # check for required configuration settings
-if [ -z "$db_host" ]; then
+if [ -z "${db_host:-}" ]; then
     error "ERROR: Missing required configuration setting 'db_host' in 'migrations/config'."
     error "Please specify the hostname anchovy should connect to in the config file"
     exit 1
 fi
-if [ -z "$db_user" ]; then
+if [ -z "${db_user:-}" ]; then
     error "ERROR: Missing required configuration setting 'db_user' in 'migrations/config'."
     error "Please specify the user anchovy should use to connect to the database in the config file"
     exit 1
 fi
-if [ -z "$db_password" ]; then
+if [ -z "${db_password:-}" ]; then
     error "ERROR: Missing required configuration setting 'db_password' in 'migrations/config'."
     error "Please specify the password anchovy should use to connect to the database in the config file"
     exit 1
 fi
-if [ -z "$db_name" ]; then
+if [ -z "${db_name:-}" ]; then
     error "ERROR: Missing required configuration setting 'db_name' in 'migrations/config'."
     error "Please specify the database name anchovy should connect to in the config file"
     exit 1
