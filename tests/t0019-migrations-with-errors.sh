@@ -17,8 +17,10 @@ EOF
 touch migrations/3-also-succeeds.sql
 
 # When we run anchovy
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # Then we expect it to fail
 expected_message="* checking for migration tables                      [MISSING]

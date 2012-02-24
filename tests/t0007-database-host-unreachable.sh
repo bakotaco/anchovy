@@ -19,8 +19,10 @@ db_password='$db_password'
 db_name='$db_name'" > migrations/config
 
 # run the anchovy script
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to succeed
 expected_message="ERROR: Cannot connect to host 'nonexistentdatabasehost'.

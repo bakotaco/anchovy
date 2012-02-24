@@ -12,8 +12,10 @@ cd $dir
 mkdir migrations
 
 # run the anchovy script and expect it to fail
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # assertions
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"

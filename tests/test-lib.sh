@@ -1,5 +1,7 @@
 # exit when uninitialised variables encountered
 set -u
+# exit upon error
+set -e
 
 # our command
 anchovy_cmd="$PWD/../anchovy"

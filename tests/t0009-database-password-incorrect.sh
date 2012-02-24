@@ -22,8 +22,10 @@ db_password='wrongpassword'
 db_name='nonexistingdb'" > migrations/config
 
 # run the anchovy script
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to succeed
 expected_message="ERROR: Access denied for user '$db_username'.

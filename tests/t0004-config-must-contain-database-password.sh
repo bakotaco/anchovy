@@ -16,8 +16,10 @@ echo "db_host='somehost'
 db_user='someuser'" > migrations/config
 
 # run the anchovy script
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to fail with the specified message
 expected_message="ERROR: Missing required configuration setting 'db_password' in 'migrations/config'.

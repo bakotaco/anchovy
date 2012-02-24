@@ -16,8 +16,10 @@ touch migrations/0001-does-nothing.sql
 touch migrations/0012-does-nothing.sql
 
 # and run anchovy again
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to fail with the following error message
 expected_message="* checking for migration tables                      [OK]

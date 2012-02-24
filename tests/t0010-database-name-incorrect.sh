@@ -24,8 +24,10 @@ db_password='$db_password'
 db_name='$non_existent_db_name'" > migrations/config
 
 # run the anchovy script
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to succeed
 expected_message="ERROR: Access denied to database with name '$non_existent_db_name'.

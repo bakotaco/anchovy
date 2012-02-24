@@ -2,6 +2,8 @@
 
 # exit when uninitialised variables encountered
 set -u
+# exit upon error
+set -e
 
 error () {
     echo "$*" 1>&2
@@ -51,17 +53,23 @@ MYSQL_COMMAND="mysql --host=$db_host --user=$db_user --password=$db_password --d
 
 execute_migration () {
     file=$1
+    set +e
     $MYSQL_COMMAND < "$file" 2>&1
+    exit_code=$?
+    set -e
     # catch MySQL error
-    return $?
+    return $exit_code
 }
 
 run_mysql_query () {
     sql=$1
     # NOTE: quoting $sql in the line below breaks things, however is it currently properly quoted?
+    set +e
     mysql_out=$(echo "$sql" | $MYSQL_COMMAND 2>&1)
+    exit_code=$?
+    set -e
     # catch MySQL error
-    if [ $? != 0 ]; then
+    if [ $exit_code != 0 ]; then
         # attempt to convert the errors given by MySQL to errors which
         # provide the user context
         if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' (0)$" >/dev/null; then
@@ -113,7 +121,7 @@ fi
 MIGRATION_PATTERN="^[0-9][0-9]*.*\.sql$"
 
 # check for invalid files in migrations dir
-invalid_files=$(ls migrations | grep -v $MIGRATION_PATTERN | grep -v config)
+invalid_files=$(ls migrations | grep -v $MIGRATION_PATTERN | grep -v config || true)
 if [ -n "$invalid_files" ]; then
     error "ERROR: found files in migrations/ directory which do not start with a positive number and/or have a '.sql' file extension"
     echo "$invalid_files" | sed 's,^,- migrations/,'
@@ -171,14 +179,7 @@ for migration in $migrations; do
             exit 1
         fi
 
-        mysql_out=$(execute_migration "migrations/$migration")
-        if [ $? = 0 ]; then
-            # note that \055 is the '-' character; as it's the first character
-            # in the string, using the ascii code here prevents printf from
-            # interpreting the string as an option
-            printf "\055 %-50s %s\n" "executing migrations/$migration" "[OK]"
-            run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
-        else
+        if ! mysql_out=$(execute_migration "migrations/$migration"); then
             # note that \055 is the '-' character; as it's the first character
             # in the string, using the ascii code here prevents printf from
             # interpreting the string as an option
@@ -186,6 +187,12 @@ for migration in $migrations; do
             error "ERROR: Executing migration migrations/$migration failed, the database returned:"
             error $mysql_out
             exit 1
+        else
+            # note that \055 is the '-' character; as it's the first character
+            # in the string, using the ascii code here prevents printf from
+            # interpreting the string as an option
+            printf "\055 %-50s %s\n" "executing migrations/$migration" "[OK]"
+            run_mysql_query "INSERT INTO migrations SET id = '$migration_id', md5 = '$md5'" >/dev/null
         fi
     fi
 done
