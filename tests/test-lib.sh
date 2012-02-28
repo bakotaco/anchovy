@@ -68,8 +68,11 @@ db_username="anchovy_test"
 db_password="m1gr4t3"
 db_name="anchovy_test_db"
 MYSQL_COMMAND="mysql --host=$db_host --user=$db_username --password=$db_password --database=$db_name"
+set +e
 mysql_out=$($MYSQL_COMMAND </dev/null 2>&1)
-if [ $? != 0 ]; then
+exit_status=$?
+set -e
+if [ $exit_status != 0 ]; then
     echo $mysql_out
     error "FAILURE: Unable to connect to database for testing purposes"
     error ""
