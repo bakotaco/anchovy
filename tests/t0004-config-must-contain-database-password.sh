@@ -3,7 +3,7 @@
 # The database password anchovy uses to connect to the database is required to
 # be specified in the configuration file
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test

@@ -3,7 +3,7 @@
 # When anchovy is run without a migrations dir an error should be raised
 #
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test. there is no migrations subdirectory.

@@ -2,7 +2,7 @@
 #
 # Anchovy connects to the database using the settings in migrations/config
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test

@@ -3,7 +3,7 @@
 # When a wrong password is specified, anchovy will fail on the first
 # migration.
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test

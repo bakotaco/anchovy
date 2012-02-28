@@ -3,7 +3,7 @@
 # When all required configuration settings are present, but there are no
 # migration to run, anchovy will exit successfully
 
-. test-lib.sh
+. ./test-lib.sh
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test

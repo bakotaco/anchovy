@@ -2,7 +2,7 @@
 #
 # When anchovy is run for the second time, the executed migrations are not executed again
 
-. test-lib.sh
+. ./test-lib.sh
 
 create_valid_project
 

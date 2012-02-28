@@ -16,7 +16,7 @@ test:
 	passed=0; \
 	for f in *; do \
 	  if echo $$f | grep '^t[[:digit:]]\{4\}' >/dev/null; then \
-	    test_out=$$(. $(basename $$f) 2>&1); \
+	    test_out=$$(. ./$(basename $$f) 2>&1); \
 	    exit_status=$$?; \
 	    if [ $$exit_status = 0 ]; then \
 	      printf "%-50s %s\n" $$f "[OK]"; \
