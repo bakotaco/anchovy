@@ -6,7 +6,7 @@ set -u
 set -e
 
 error () {
-    echo "$*" 1>&2
+    printf "${1}\n" >&2
 }
 
 # check for migrations subdirectory in current directory
@@ -99,11 +99,11 @@ run_mysql_query () {
 run_mysql_query "" >/dev/null
 
 # check for migrations table
-echo "* checking for migration tables                      \c"
+printf "* checking for migration tables                      "
 out=$(run_mysql_query "SHOW TABLES like 'migrations'")
 if [ -z "$out" ]; then
     # migrations table does not exist, create it
-    echo "[MISSING]"
+    printf "[MISSING]\n"
 
     # make sure the database is empty
     if [ -n "$(run_mysql_query 'SHOW TABLES')" ]; then
@@ -111,7 +111,7 @@ if [ -z "$out" ]; then
         exit 1
     fi
 
-    echo "- creating migration tables                          \c"
+    printf "\055 creating migration tables                          "
     run_mysql_query "CREATE TABLE migrations (id INT UNSIGNED NOT NULL UNIQUE, md5 CHAR(32) NOT NULL)" >/dev/null
     echo "[OK]"
 else
@@ -144,7 +144,7 @@ if [ -n "$duplicate_migration_ids" ]; then
     for migration in $migrations; do
         migration_id=$(echo "$migration" | filter_migration_ids)
         if echo "$duplicate_migration_ids" | grep "^$migration_id$" >/dev/null; then
-            error "- migrations/$migration"
+            error "\055 migrations/$migration"
         fi
     done
     exit 1
@@ -166,10 +166,10 @@ for migration in $migrations; do
     if echo "$executed_migration_ids" | grep "^$migration_id$" >/dev/null; then
         # verify that the executed migration has not changed
         if echo "$executed_migrations" | grep "$md5" >/dev/null; then
-            echo "- already executed migrations/$migration"
+            printf "\055 already executed migrations/${migration}\n"
         else
             error "ERROR: found already executed migration which has been altered since executing it:"
-            error "- migrations/$migration"
+            error "\055 migrations/$migration"
             exit 1
         fi
     else
@@ -185,7 +185,7 @@ for migration in $migrations; do
             # interpreting the string as an option
             printf "\055 %-50s %s\n" "executing migrations/$migration" "[ERROR]"
             error "ERROR: Executing migration migrations/$migration failed, the database returned:"
-            error $mysql_out
+            error "$mysql_out"
             exit 1
         else
             # note that \055 is the '-' character; as it's the first character
