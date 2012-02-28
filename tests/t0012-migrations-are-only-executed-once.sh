@@ -13,8 +13,10 @@ touch migrations/0001-does-nothing.sql
 stdout=$($anchovy_cmd 2>&1)
 
 # and again
+set +e
 stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
+set -e
 
 # expect it to succeed without having executed new migrations
 
