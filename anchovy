@@ -72,7 +72,7 @@ run_mysql_query () {
     if [ $exit_code != 0 ]; then
         # attempt to convert the errors given by MySQL to errors which
         # provide the user context
-        if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' (0)$" >/dev/null; then
+        if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' ([0-9][0-9]*)$" >/dev/null; then
             error "ERROR: Cannot connect to host '$db_host'."
             error "Is the host specified in the configuration file up and reachable?"
         elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: NO)" >/dev/null; then
