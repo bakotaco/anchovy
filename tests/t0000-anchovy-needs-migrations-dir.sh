@@ -7,8 +7,7 @@
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test. there is no migrations subdirectory.
-dir=$(mktemp -d -t anchovy-test)
-cd $dir
+create_project_dir
 
 # run the anchovy script and expect it to fail
 set +e

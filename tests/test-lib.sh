@@ -6,6 +6,9 @@ set -e
 # our command
 anchovy_cmd="$PWD/../anchovy"
 
+# set TMPDIR when unset for use in our mktemp template
+TMPDIR=${TMPDIR:-/tmp}
+
 # helpers
 function error {
     echo "$*" 1>&2
@@ -23,8 +26,8 @@ function assert_equals {
         if which diff >/dev/null; then
             # show difference using a unified diff
             error "Diff of expected and actual follows:"
-            expected_file=$(mktemp -t expected)
-            actual_file=$(mktemp -t actual)
+            expected_file=$(mktemp "$TMPDIR/anchovy-test-expected-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+            actual_file=$(mktemp "$TMPDIR/anchovy-test-actual-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX")
             echo "$1" > $expected_file
             echo "$2" > $actual_file
             diff -U10000 $expected_file $actual_file
@@ -90,13 +93,21 @@ for table in $(echo 'SHOW TABLES' | $MYSQL_COMMAND | tail -n +2); do
     echo "DROP TABLE IF EXISTS $table" | $MYSQL_COMMAND
 done
 
-# helper method for creating a stub project with a valid config
-function create_valid_project {
-
+create_project_dir () {
     # create an empty directory somewhere which is treated as our 'project'
     # directory for the scope of this test
-    dir=$(mktemp -d -t anchovy-test)
-    cd $dir
+    # NOTE: mktemp is not portable
+    project_dir=$(mktemp -d "$TMPDIR/anchovy-test-XXXXXXXXXXXXXXXXXXXXXXXXXXXXX") || { error "ERROR creating a temporary file"; exit 255; }
+    # Remove the temporary directory when the script finishes, or when it receives a signal
+    trap 'rm -rf "$project_dir"' 0       # remove directory when script finishes
+    trap 'exit 2' 1 2 3 15       # terminate script when receiving signal
+
+    cd $project_dir
+}
+
+# helper method for creating a stub project with a valid config
+create_valid_project () {
+    create_project_dir
 
     # create a migrations directory
     mkdir migrations

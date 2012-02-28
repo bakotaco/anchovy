@@ -7,8 +7,7 @@
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t anchovy-test)
-cd $dir
+create_project_dir
 # create a migrations directory
 mkdir migrations
 # only the database host, user and password are specified in the configuration

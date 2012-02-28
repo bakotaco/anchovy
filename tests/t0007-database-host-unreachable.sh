@@ -7,8 +7,7 @@
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t anchovy-test)
-cd $dir
+create_project_dir
 # create a migrations directory with a single dummy migration
 mkdir migrations
 touch migrations/0001-does-nothing.sql
@@ -29,6 +28,3 @@ expected_message="ERROR: Cannot connect to host 'nonexistentdatabasehost'.
 Is the host specified in the configuration file up and reachable?"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

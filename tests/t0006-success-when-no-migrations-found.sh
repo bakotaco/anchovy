@@ -7,8 +7,7 @@
 
 # create an empty directory somewhere which is treated as our 'project'
 # directory for the scope of this test
-dir=$(mktemp -d -t anchovy-test)
-cd $dir
+create_project_dir
 # create a migrations directory
 mkdir migrations
 # all required configuration settings are specified
@@ -25,6 +24,3 @@ exit_status=$?
 expected_message="Anchovy ran successfully."
 assert_matches "${expected_message}$" "$stdout" "Did not receive the expected error message"
 assert_equals 0 "$exit_status" "Expected a succesful exit status"
-
-# teardown
-rm -rf $dir
