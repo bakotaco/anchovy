@@ -75,12 +75,9 @@ run_mysql_query () {
         if echo $mysql_out | grep "^ERROR 2005 (HY000): Unknown MySQL server host '$db_host' ([0-9][0-9]*)$" >/dev/null; then
             error "ERROR: Cannot connect to host '$db_host'."
             error "Is the host specified in the configuration file up and reachable?"
-        elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: NO)" >/dev/null; then
+        elif echo $mysql_out | grep -E "^ERROR 1045 \(28000\): Access denied for user '$db_user'@'$db_host' \(using password: (YES|NO)\)" >/dev/null; then
             error "ERROR: Access denied for database user '$db_user'."
-            error "Is the username '$db_user' specified in the configuration correct?"
-        elif echo $mysql_out | grep "^ERROR 1045 (28000): Access denied for user '$db_user'@'$db_host' (using password: YES)" >/dev/null; then
-            error "ERROR: Access denied for user '$db_user'."
-            error "Is the password specified in the configuration file correct?"
+            error "Are the username '$db_user' and password specified in the configuration correct?"
         elif echo $mysql_out | grep "^ERROR 1044 (42000): Access denied for user '$db_user'@'$db_host' to database '$db_name'" >/dev/null; then
             error "ERROR: Access denied to database with name '$db_name'."
             error "Is the database name specified in the configuration file correct?"

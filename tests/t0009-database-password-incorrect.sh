@@ -27,9 +27,11 @@ stdout=$($anchovy_cmd 2>&1)
 exit_status=$?
 set -e
 
-# expect it to succeed
-expected_message="ERROR: Access denied for user '$db_username'.
-Is the password specified in the configuration file correct?"
+# expect it to fail
+# NOTE: we can't determine whether the username or password are wrong, so we
+#       mention both in the error
+expected_message="ERROR: Access denied for database user '$db_username'.
+Are the username '$non_existent_db_user' and password specified in the configuration correct?"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
 
