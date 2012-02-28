@@ -86,7 +86,7 @@ if [ $? != 0 ]; then
 fi
 
 # remove all tables
-for table in $(echo 'SHOW TABLES' | $MYSQL_COMMAND | tail +2); do
+for table in $(echo 'SHOW TABLES' | $MYSQL_COMMAND | tail -n +2); do
     echo "DROP TABLE IF EXISTS $table" | $MYSQL_COMMAND
 done
 
