@@ -150,8 +150,13 @@ fi
 # note that 'tail -n +2' skips the mysql header (first line of output)
 executed_migrations=$(run_mysql_query "SELECT id, md5 FROM migrations ORDER BY id" | tail -n +2)
 executed_migration_ids=$(echo "$executed_migrations" | awk '{ print $1 }')
-# here $((..)) will make the number numeric, stripping any leading zeroes
-executed_max_id=$(($(echo "$executed_migration_ids" | tail -n -1)))
+if [ -n "$executed_migration_ids" ]; then
+    # The $((..)) will make the number numeric, stripping any leading zeroes
+    executed_max_id=$(( $( echo "$executed_migration_ids" | tail -n -1 ) ))
+else
+    # zero is the default value when no migrations have yet been executed
+    executed_max_id=0
+fi
 
 # actually execute the migrations
 echo "* executing migrations"

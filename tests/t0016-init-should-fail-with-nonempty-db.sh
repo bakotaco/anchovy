@@ -20,6 +20,3 @@ expected_message="* checking for migration tables                      [MISSING]
 ERROR: database is not empty, will only initialize in an empty database."
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

@@ -26,6 +26,3 @@ expected_message="* checking for migration tables                      [OK]
 Anchovy ran successfully."
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 0 "$exit_status" "Expected a succesful exit status"
-
-# teardown
-rm -rf $dir

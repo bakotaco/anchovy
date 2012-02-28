@@ -39,6 +39,3 @@ ERROR: found migrations with duplicate numbers:
 - migrations/5-duplicate.sql"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

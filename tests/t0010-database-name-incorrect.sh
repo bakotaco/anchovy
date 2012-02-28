@@ -35,6 +35,3 @@ Does the specified database exist?
 Does the specified user have access privileges to the specified database?"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

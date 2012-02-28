@@ -25,6 +25,3 @@ expected_message="ERROR: Missing required configuration setting 'db_password' in
 Please specify the password anchovy should use to connect to the database in the config file"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

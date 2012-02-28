@@ -32,6 +32,3 @@ ERROR: found files in migrations/ directory which do not start with a positive n
 - migrations/number-is-0001-in-between.sql"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir

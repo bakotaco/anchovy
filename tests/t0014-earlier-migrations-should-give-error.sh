@@ -27,6 +27,3 @@ expected_message="* checking for migration tables                      [OK]
 ERROR: migrations/0001-does-nothing.sql has not been executed, but a higher migration with id 11 has already been executed"
 assert_equals "$expected_message" "$stdout" "Did not receive the expected error message"
 assert_equals 1 "$exit_status" "Expected an unsuccesful exit status"
-
-# teardown
-rm -rf $dir
