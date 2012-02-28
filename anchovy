@@ -125,7 +125,7 @@ if [ -n "$invalid_files" ]; then
     exit 1
 fi
 
-function filter_migration_ids () {
+filter_migration_ids () {
     # NOTE: here we also strip any potential leading zeroes, except when
     # it's the last number
     sed -n 's,^0*\([0-9][0-9]*\).*.sql$,\1,p'

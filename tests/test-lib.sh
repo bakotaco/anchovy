@@ -10,16 +10,16 @@ anchovy_cmd="$PWD/../anchovy"
 TMPDIR=${TMPDIR:-/tmp}
 
 # helpers
-function error {
+error () {
     echo "$*" 1>&2
 }
 
-function fail {
+fail () {
     error "FAIL: $1"
     exit 1
 }
 
-function assert_equals {
+assert_equals () {
     if [ "$1" != "$2" ]; then
         error "FAILURE: '$3'"
         # when diff is available
@@ -46,7 +46,7 @@ function assert_equals {
     fi
 }
 
-function assert_matches {
+assert_matches () {
     if echo "$2" | grep "$1"; then
         # TODO: can't we simply negate the previous check? can that be done
         # easy and elegantly?
