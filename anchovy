@@ -158,7 +158,14 @@ echo "* executing migrations"
 for migration in $migrations; do
     # execute migration
     migration_id=$(echo "$migration" | filter_migration_ids)
-    md5=$(md5 < "migrations/$migration")
+    if hash md5 2>/dev/null; then
+        md5=$(md5 < "migrations/$migration")
+    elif hash md5sum 2>/dev/null; then
+        md5=$(md5sum < "migrations/$migration" | awk '{ print $1 }')
+    else
+        error "ERROR: anchovy requires 'md5' or 'md5sum' but both are not found in $PATH"
+        exit 2
+    fi
 
     if echo "$executed_migration_ids" | grep "^$migration_id$" >/dev/null; then
         # verify that the executed migration has not changed
